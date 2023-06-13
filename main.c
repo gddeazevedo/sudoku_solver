@@ -1,6 +1,6 @@
 #include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
+
 
 #define SIZE 9
 #define EMPTY 0
@@ -40,9 +40,9 @@ void solve_sudoku(int grid[SIZE][SIZE]) {
 }
 
 bool solve(int grid[SIZE][SIZE], int row, int col) {
-    if (row == SIZE + 1) {
+    if (row == SIZE) {
         return true;
-    } else if (col == SIZE + 1) {
+    } else if (col == SIZE) {
         return solve(grid, row + 1, 0);
     } else if (grid[row][col] != EMPTY) {
         return solve(grid, row, col + 1);
