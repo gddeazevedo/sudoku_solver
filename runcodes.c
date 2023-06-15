@@ -1,6 +1,5 @@
 #include <stdbool.h>
 #include <stdio.h>
-#include <time.h>
 
 #define SIZE 9
 #define EMPTY 0
@@ -18,17 +17,10 @@ int get_box(int row, int col);
 
 
 int main() {
-    clock_t start;
-    clock_t end;
-    double exec_time;
     int grid[SIZE][SIZE];
-
-    start = clock();
-
     init_grid(grid);
     solve_sudoku(grid);
     print_grid(grid);
-
     return 0;
 }
 
