@@ -74,8 +74,13 @@ bool is_valid_col(int grid[SIZE][SIZE], int col, int number) {
 }
 
 bool is_valid_subgrid(int grid[SIZE][SIZE], int row, int col, int number) {
-    for (int r = row / 3 * 3; r < row / 3 * 3 + 3; r++) {
-        for (int c = col / 3 * 3; c < col / 3 * 3 + 3; c++) {
+    int subgrid_init_row = row / 3 * 3; 
+    int subgrid_finish_row = row / 3 * 3 + 3;
+    int subgrid_init_col = col / 3 * 3;
+    int subgrid_finish_col = col / 3 * 3 + 3;
+
+    for (int r = subgrid_init_row; r < subgrid_finish_row; r++) {
+        for (int c = subgrid_init_col; c < subgrid_finish_col; c++) {
             if (grid[r][c] == number) {
                 return false;
             }
