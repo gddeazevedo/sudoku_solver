@@ -13,8 +13,6 @@ bool is_valid_col(int grid[SIZE][SIZE], int col, int number);
 bool is_valid_subgrid(int grid[SIZE][SIZE], int row, int col, int number);
 bool is_valid(int grid[SIZE][SIZE], int row, int col, int number);
 void print_grid(int grid[SIZE][SIZE]);
-int get_box(int row, int col);
-
 
 int main() {
     int grid[SIZE][SIZE];
@@ -23,7 +21,6 @@ int main() {
     print_grid(grid);
     return 0;
 }
-
 
 void init_grid(int grid[SIZE][SIZE]) {
     int number;
@@ -41,27 +38,23 @@ void solve_sudoku(int grid[SIZE][SIZE]) {
 }
 
 bool solve(int grid[SIZE][SIZE], int row, int col) {
-    if (row == SIZE) {
-        return true;
-    } else if (col == SIZE) {
-        return solve(grid, row + 1, 0);
-    } else if (grid[row][col] != EMPTY) {
-        return solve(grid, row, col + 1);
-    } else {
-        for (int number = 1; number < 10; number++) {
-            if (is_valid(grid, row, col, number)) {
-                grid[row][col] = number;
+    if (row == SIZE) return true;
+    else if (col == SIZE) return solve(grid, row + 1, 0);
+    else if (grid[row][col] != EMPTY) return solve(grid, row, col + 1);
 
-                if (solve(grid, row, col + 1)) {
-                    return true;
-                }
+    for (int number = 1; number < 10; number++) {
+        if (is_valid(grid, row, col, number)) {
+            grid[row][col] = number;
 
-                grid[row][col] = EMPTY;
+            if (solve(grid, row, col + 1)) {
+                return true;
             }
-        }
 
-        return false;
+            grid[row][col] = EMPTY;
+        }
     }
+
+    return false; 
 }
 
 bool is_valid_row(int grid[SIZE][SIZE], int row, int number) {
