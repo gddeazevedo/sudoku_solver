@@ -37,7 +37,6 @@ int main() {
     printf("Operation counter: %d\n", operation_counter);
     print_grid(grid);
 
-
     return 0;
 }
 
