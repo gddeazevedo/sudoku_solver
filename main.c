@@ -5,42 +5,42 @@
 #define SIZE 9
 #define EMPTY 0
 
-void init_grid(int grid[SIZE][SIZE]);
-void solve_sudoku(int grid[SIZE][SIZE]);
-bool solve(int grid[SIZE][SIZE], int row, int col);
+void init_grid();
+void solve_sudoku();
+bool solve(int row, int col);
 bool is_grid_full(int grid);
-bool not_in_row(int grid[SIZE][SIZE], const int row, const int number);
-bool not_in_col(int grid[SIZE][SIZE], const int col, const int number);
-bool not_in_subgrid(int grid[SIZE][SIZE], const int row, const int col, const int number);
-bool is_valid(int grid[SIZE][SIZE], const int row, const int col, const int number);
-void print_grid(int grid[SIZE][SIZE]);
+bool not_in_row(const int row, const int number);
+bool not_in_col(const int col, const int number);
+bool not_in_subgrid(const int row, const int col, const int number);
+bool is_valid(const int row, const int col, const int number);
+void print_grid();
 
 
 int operation_counter = 0;
+int grid[SIZE][SIZE];
 
 
 int main() {
     clock_t start;
     clock_t end;
     double exec_time;
-    int grid[SIZE][SIZE];
 
     start = clock();
 
-    init_grid(grid);
-    solve_sudoku(grid);
+    init_grid();
+    solve_sudoku();
 
     end = clock();
     exec_time = (double) (end - start) / CLOCKS_PER_SEC * 1000;
 
     printf("Execution time: %.2fms\n", exec_time);
     printf("Operation counter: %d\n", operation_counter);
-    print_grid(grid);
+    print_grid();
 
     return 0;
 }
 
-void init_grid(int grid[SIZE][SIZE]) {
+void init_grid() {
     int number;
 
     for (int i = 0; i < SIZE; i++) {
@@ -51,22 +51,22 @@ void init_grid(int grid[SIZE][SIZE]) {
     }
 }
 
-void solve_sudoku(int grid[SIZE][SIZE]) {
-    solve(grid, 0, 0);
+void solve_sudoku() {
+    solve(0, 0);
 }
 
-bool solve(int grid[SIZE][SIZE], int row, int col) {
+bool solve(int row, int col) {
     if (row == SIZE) return true;
-    else if (col == SIZE) return solve(grid, row + 1, 0);
-    else if (grid[row][col] != EMPTY) return solve(grid, row, col + 1);
+    else if (col == SIZE) return solve(row + 1, 0);
+    else if (grid[row][col] != EMPTY) return solve(row, col + 1);
 
     for (int number = 1; number < 10; number++) {
         operation_counter += 1;
 
-        if (is_valid(grid, row, col, number)) {
+        if (is_valid(row, col, number)) {
             grid[row][col] = number;
 
-            if (solve(grid, row, col + 1)) {
+            if (solve(row, col + 1)) {
                 return true;
             }
 
@@ -77,7 +77,7 @@ bool solve(int grid[SIZE][SIZE], int row, int col) {
     return false;
 }
 
-bool not_in_row(int grid[SIZE][SIZE], const int row, const int number) {
+bool not_in_row(const int row, const int number) {
     for (int col = 0; col < SIZE; col++) {
         if (grid[row][col] == number) return false;
     }
@@ -85,7 +85,7 @@ bool not_in_row(int grid[SIZE][SIZE], const int row, const int number) {
     return true;
 }
 
-bool not_in_col(int grid[SIZE][SIZE], const int col, const int number) {
+bool not_in_col(const int col, const int number) {
     for (int row = 0; row < SIZE; row++) {
         if (grid[row][col] == number) return false;
     }
@@ -93,15 +93,13 @@ bool not_in_col(int grid[SIZE][SIZE], const int col, const int number) {
     return true;
 }
 
-bool not_in_subgrid(int grid[SIZE][SIZE], const int row, const int col, const int number) {
-    int subgrid_init_row = row / 3 * 3; 
-    int subgrid_finish_row = row / 3 * 3 + 3;
+bool not_in_subgrid(const int row, const int col, const int number) {
+    int subgrid_init_row = row / 3 * 3;
     int subgrid_init_col = col / 3 * 3;
-    int subgrid_finish_col = col / 3 * 3 + 3;
 
-    for (int r = subgrid_init_row; r < subgrid_finish_row; r++) {
-        for (int c = subgrid_init_col; c < subgrid_finish_col; c++) {
-            if (grid[r][c] == number) {
+    for (int r = 0; r < 3; r++) {
+        for (int c = 0; c < 3; c++) {
+            if (grid[subgrid_init_row + r][subgrid_init_col + c] == number) {
                 return false;
             }
         }
@@ -110,16 +108,16 @@ bool not_in_subgrid(int grid[SIZE][SIZE], const int row, const int col, const in
     return true;
 }
 
-bool is_valid(int grid[SIZE][SIZE], const int row, const int col, const int number) {
+bool is_valid(const int row, const int col, const int number) {
     return (
         grid[row][col] == EMPTY &&
-        not_in_subgrid(grid, row, col, number) &&
-        not_in_row(grid, row, number) &&
-        not_in_col(grid, col, number)
+        not_in_subgrid(row, col, number) &&
+        not_in_row(row, number) &&
+        not_in_col(col, number)
     );
 }
 
-void print_grid(int grid[SIZE][SIZE]) {
+void print_grid() {
     for (int row = 0; row < SIZE; row++) {
         if (!(row % 3)) {
             printf("-------------------------\n");
