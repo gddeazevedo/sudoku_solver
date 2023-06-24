@@ -109,12 +109,12 @@ bool is_valid(int grid[SIZE][SIZE], int row, int col, int number) {
 
 void print_grid(int grid[SIZE][SIZE]) {
     for (int row = 0; row < SIZE; row++) {
-        if (row % 3 == 0) {
+        if (!(row % 3)) {
             printf("-------------------------\n");
         }
 
         for (int col = 0; col < SIZE; col++) {
-            if (col % 3 == 0){
+            if (!(col % 3)){
                 printf("| ");
             }
             printf("%d ", grid[row][col]);
