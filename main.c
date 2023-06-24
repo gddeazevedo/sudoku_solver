@@ -15,6 +15,10 @@ bool is_valid_subgrid(int grid[SIZE][SIZE], int row, int col, int number);
 bool is_valid(int grid[SIZE][SIZE], int row, int col, int number);
 void print_grid(int grid[SIZE][SIZE]);
 
+
+int operation_counter = 0;
+
+
 int main() {
     clock_t start;
     clock_t end;
@@ -25,7 +29,14 @@ int main() {
 
     init_grid(grid);
     solve_sudoku(grid);
+
+    end = clock();
+    exec_time = (double) (end - start) / CLOCKS_PER_SEC * 1000;
+
+    printf("Execution time: %.2fms\n", exec_time);
+    printf("Operation counter: %d\n", operation_counter);
     print_grid(grid);
+
 
     return 0;
 }
@@ -51,6 +62,8 @@ bool solve(int grid[SIZE][SIZE], int row, int col) {
     else if (grid[row][col] != EMPTY) return solve(grid, row, col + 1);
 
     for (int number = 1; number < 10; number++) {
+        operation_counter += 1;
+
         if (is_valid(grid, row, col, number)) {
             grid[row][col] = number;
 
