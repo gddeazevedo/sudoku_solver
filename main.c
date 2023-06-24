@@ -9,10 +9,10 @@ void init_grid(int grid[SIZE][SIZE]);
 void solve_sudoku(int grid[SIZE][SIZE]);
 bool solve(int grid[SIZE][SIZE], int row, int col);
 bool is_grid_full(int grid);
-bool is_valid_row(int grid[SIZE][SIZE], int row, int number);
-bool is_valid_col(int grid[SIZE][SIZE], int col, int number);
-bool is_valid_subgrid(int grid[SIZE][SIZE], int row, int col, int number);
-bool is_valid(int grid[SIZE][SIZE], int row, int col, int number);
+bool not_in_row(int grid[SIZE][SIZE], const int row, const int number);
+bool not_in_col(int grid[SIZE][SIZE], const int col, const int number);
+bool not_in_subgrid(int grid[SIZE][SIZE], const int row, const int col, const int number);
+bool is_valid(int grid[SIZE][SIZE], const int row, const int col, const int number);
 void print_grid(int grid[SIZE][SIZE]);
 
 
@@ -77,7 +77,7 @@ bool solve(int grid[SIZE][SIZE], int row, int col) {
     return false;
 }
 
-bool is_valid_row(int grid[SIZE][SIZE], int row, int number) {
+bool not_in_row(int grid[SIZE][SIZE], const int row, const int number) {
     for (int col = 0; col < SIZE; col++) {
         if (grid[row][col] == number) return false;
     }
@@ -85,7 +85,7 @@ bool is_valid_row(int grid[SIZE][SIZE], int row, int number) {
     return true;
 }
 
-bool is_valid_col(int grid[SIZE][SIZE], int col, int number) {
+bool not_in_col(int grid[SIZE][SIZE], const int col, const int number) {
     for (int row = 0; row < SIZE; row++) {
         if (grid[row][col] == number) return false;
     }
@@ -93,7 +93,7 @@ bool is_valid_col(int grid[SIZE][SIZE], int col, int number) {
     return true;
 }
 
-bool is_valid_subgrid(int grid[SIZE][SIZE], int row, int col, int number) {
+bool not_in_subgrid(int grid[SIZE][SIZE], const int row, const int col, const int number) {
     int subgrid_init_row = row / 3 * 3; 
     int subgrid_finish_row = row / 3 * 3 + 3;
     int subgrid_init_col = col / 3 * 3;
@@ -110,12 +110,12 @@ bool is_valid_subgrid(int grid[SIZE][SIZE], int row, int col, int number) {
     return true;
 }
 
-bool is_valid(int grid[SIZE][SIZE], int row, int col, int number) {
+bool is_valid(int grid[SIZE][SIZE], const int row, const int col, const int number) {
     return (
         grid[row][col] == EMPTY &&
-        is_valid_row(grid, row, number) &&
-        is_valid_col(grid, col, number) &&
-        is_valid_subgrid(grid, row, col, number)
+        not_in_subgrid(grid, row, col, number) &&
+        not_in_row(grid, row, number) &&
+        not_in_col(grid, col, number)
     );
 }
 
