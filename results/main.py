@@ -1,5 +1,6 @@
 import csv
 from matplotlib import pyplot as plt
+from matplotlib.ticker import ScalarFormatter
 
 
 def plot_graph(title, file, types):
@@ -21,7 +22,7 @@ def plot_graph(title, file, types):
                 y_points.append(types[1](row[1]))
             line += 1
 
-    plt.plot(x_points, y_points)
+    plt.bar(x_points, y_points, color ='maroon', width = 0.4, log=True)
     plt.xlabel(x_label)
     plt.ylabel(y_label)
     plt.title(title)
@@ -29,11 +30,11 @@ def plot_graph(title, file, types):
 
 
 def plot_exec_time_per_instance_graph():
-   plot_graph('Execution Time x Instance', './exec_time.csv', [int, float])
+   plot_graph('Execution Time x Instance', './exec_time.csv', [str, float])
 
 
 def plot_operations_per_instance_graph():
-    plot_graph('Operation x Instance', './operations.csv', [int, int])
+    plot_graph('Operation x Instance', './operations.csv', [str, int])
     
 
 if __name__ == '__main__':
